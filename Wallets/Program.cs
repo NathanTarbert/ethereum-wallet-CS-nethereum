@@ -101,7 +101,7 @@ namespace Wallets
                         {
                             // Send transaction from own wallet to another address.
                             case "send":
-                                SendTransactionDialog(wallet);
+                                await SendTransactionDialog(wallet);
                                 break;
 
                             // Shows the balances of addresses and total balance.
@@ -259,10 +259,14 @@ namespace Wallets
         public static Wallet CreateWallet(string password, string pathfile)
         {
             // TODO: Create a new wallet via a random 12-word mnemonic.
+            Wallet wallet = new Wallet(Wordlist.English, WordCount.Twelve);
+            string words = string.Join(" ", wallet.Words);
+            string filename = string.Empty;
 
             try
             {
                 // TODO: Save the Wallet in the Directory path declared earlier.
+                fileName = SaveWalletToJsonFile(wallet, password, pathfile);
             }
             catch (Exception e)
             {
@@ -275,10 +279,17 @@ namespace Wallets
             WriteLine("---");
 
             // TODO: Display the mnemonic phrase
+            WriteLine("Mnemonic words:");
+            WriteLine(words);
+            WriteLine("---");
 
             // TODO: Display the seed
+            WriteLine("Seed: ");
+            WriteLine(wallet.Seed);
+            WriteLine("---");
 
             // TODO: Implement and use PrintAddressesAndKeys to print all the Addresses and Keys.
+            PrintAddressesAndKeys(wallet);
 
             return wallet;
         }
@@ -286,6 +297,15 @@ namespace Wallets
         private static void PrintAddressesAndKeys(Wallet wallet)
         {
             // TODO: Print all the Addresses and the coresponding Private Keys.
+            WriteLine("Address => Private Key");
+            int NUMBER_OF_DERIVATIONS = 20;
+
+            for(int i = 0; i < NUMBER_OF_DERIVATIONS: i++)
+            {
+                WriteLine($"{wallet.GetAccount(i).Address} -> {wallet.GetAccount(i).PrivateKey}");
+            }
+
+            WriteLine(string.Empty);
         }
 
         private static string SaveWalletToJsonFile(Wallet wallet, string password, string pathfile)
