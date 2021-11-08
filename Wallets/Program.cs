@@ -311,6 +311,24 @@ namespace Wallets
         private static string SaveWalletToJsonFile(Wallet wallet, string password, string pathfile)
         {
             //TODO: Encrypt the wallet
+            string words = string.Join(" ", wallet.Words);
+            string encryptedWords = Rijndael.Encrypt(words, password, KeySize.Aes256);
+
+            //TODO Save the Wallet as JSON to disk
+            DateTime now = DateTime.Now;
+            var walletJSONData = new { encryptedWords, date = now.ToString() };
+            string JSON = JsonConvert.SerializeObject(walletJSONData);
+            Random random = new Random();
+            var fileName = "EthereumWallet_"
+                + now.Year + "-"
+                + now.Month + "-"
+                + now.Day + "-"
+                + now.Hour + "-"
+                + now.Minute + "-"
+                + now.Second + "-"
+                + random.Next() + ".json";
+            File.WriteAllText(Path.Combine(pathfile, fileName), JSON);
+            WriteLine($"Wallet saved in {fileName}");
             return fileName;
         }
 
