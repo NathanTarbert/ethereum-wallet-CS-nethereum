@@ -388,6 +388,18 @@ namespace Wallets
         public static void Receive(Wallet wallet)
         {
             // TODO: Print all available addresses in Wallet.
+            if (wallet.GetAddresses().Count() > 0)
+            {
+                int NUMBER_OF_ITERATIONS = 20;
+                for (int i = 0; i < NUMBER_OF_ITERATIONS; i++)
+                {
+                    WriteLine(wallet.GetAccount(i).Address);
+                }
+                WriteLine();
+            }else
+            {
+                WriteLine("No addresses found!");
+            }
         }
 
         private static void Send(Wallet wallet, string fromAddress, string toAddress, double amountOfCoins)
