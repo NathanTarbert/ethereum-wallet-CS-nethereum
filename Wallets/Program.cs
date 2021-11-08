@@ -335,6 +335,22 @@ namespace Wallets
         private static Wallet LoadWalletFromJsonFile(string nameOfWalletFile, string path, string password)
         {
             // TODO: Implement the logic that is needed to Load and Wallet from JSON.
+            string pathToFile = Path.Combine(path, nameOfWalletFile);
+            string words = string.Empty;
+            WriteLine($"Read from {pathToFile}");
+
+            //TODO: Read the wallet from disk and decrypt
+            try
+            {
+                string file = File.ReadAllText(pathToFile);
+                dynamic results = JsonConvert.DeserializeObject<dynamic>(file);
+                string encryptWords = results.enctyptedWords;
+                words = Rijndael.Decrypt(encryptWords, password, KeySize.Aes256);
+                string dateAndTime = results.date;
+            }catch (Exception e)
+            {
+                WriteLine($"Load error: {e.Message}");
+            }
             return Recover(words);
         }
 
