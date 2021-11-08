@@ -406,7 +406,8 @@ namespace Wallets
         {
             // TODO: Generate and Send a transaction.
             // Check if sending address is in the wallet by verifying if the private key exists.
-
+            Account accountFrom = wallet.GetAccount(fromAddress);
+            string privateKeyFrom = accountFrom.PrivateKey;
 
             if (privateKeyFrom == string.Empty)
             {
@@ -414,11 +415,18 @@ namespace Wallets
             }
 
             // Todo: Initialize web3 and normalize transaction value.
+            Web3 web3 = new Web3(accountFrom, CURRENT_NETWORK);
+            System.Numerics.BigInteger wei = Web3.Convert.ToWei(amountOfCoins);
 
             // Todo: Broadcast transaction.
             try
             {
-
+                string transaction = web3.TransactionManager.SendTransactionAsync(
+                    accountFrom.Address,
+                    toAddress,
+                    new Nethereum.Hex.HexTypes.HexBigInteger(wei)
+                    ).Result;
+                WriteLine("Transaction has been sent successfully");
             }
             catch (Exception e)
             {
@@ -437,9 +445,12 @@ namespace Wallets
             // Track these balances and print the total balance of the wallet as well at the end.
             for (int i = 0; i < NUMBER_OF_ITERATIONS; i++)
             {
-
+                var address = wallet.GetAccount(i).Address;
+                var balance = web3.Eth.GetBalance.SendRequestAsync(address).Result;
+                var etherAmount = Web3.Convert.FromWei(balance.Value);
+                totalBalance += etherAmount;
+                WriteLine($"Address: {wallet.GetAccount(i).Address} -> Balance: {etherAmount} ETH");
             }
-
             WriteLine($"Total balance: {totalBalance} ETH");
         }
     }
