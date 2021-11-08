@@ -357,19 +357,26 @@ namespace Wallets
         private static Wallet Recover(string words)
         {
             // TODO: Recover a Wallet from existing mnemonic phrase.
+            Wallet wallet = new Wallet(words, null);
+            WriteLine("Wallet was successfully recovered");
+            WriteLine($"Mnemonic: {string.Join(" ", wallet.Words)}");
+            WriteLine($"Seed: {string.Join(" ", string.Join(" ", wallet.Seed))}");
+            WriteLine();
+            PrintAddressesAndKeys(wallet);
             return wallet;
         }
 
         public static Wallet RecoverFromMnemonicPhraseAndSaveToJson(string words, string password, string pathfile)
         {
             // TODO: Recover from mnemonic phrases and save to JSON.
+            Wallet wallet = Recover(words);
+            string fileName = string.Empty;
 
             // TODO: Save the wallet to JSON.
             try
             {
-
-            }
-            catch (Exception e)
+                fileName = SaveWalletToJsonFile(wallet, password, pathfile);
+            }catch (Exception e)
             {
                 WriteLine($"Error! The file {fileName} cannot be saved: {e.Message}");
                 throw e;
