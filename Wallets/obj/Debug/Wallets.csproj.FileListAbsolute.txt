@@ -1,0 +1,3 @@
+C:\Users\Nate4\source\repos\ethereum-wallet-cs-nethereum\ethereum-wallet-cs-nethereum\Wallets\obj\Debug\Wallets.csproj.AssemblyReference.cache
+C:\Users\Nate4\source\repos\ethereum-wallet-cs-nethereum\ethereum-wallet-cs-nethereum\Wallets\obj\Debug\Wallets.exe.config
+C:\Users\Nate4\source\repos\ethereum-wallet-cs-nethereum\ethereum-wallet-cs-nethereum\Wallets\obj\Debug\Wallets.csproj.CoreCompileInputs.cache

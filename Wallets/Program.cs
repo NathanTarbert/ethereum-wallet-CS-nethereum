@@ -10,7 +10,6 @@ using Nethereum.Web3.Accounts;
 using Newtonsoft.Json;
 using NBitcoin;
 using Rijndael256;
-using System.Threading;
 
 namespace Wallets
 {
@@ -24,7 +23,7 @@ namespace Wallets
             MainAsync();
         }
 
-        static async void MainAsync()
+        static async Task MainAsync(string[] args)
         {
             // Available commands
             string[] availableOperations =
@@ -101,7 +100,7 @@ namespace Wallets
                         {
                             // Send transaction from own wallet to another address.
                             case "send":
-                                await SendTransactionDialog(wallet);
+                                SendTransactionDialog(wallet);
                                 break;
 
                             // Shows the balances of addresses and total balance.
@@ -261,7 +260,7 @@ namespace Wallets
             // TODO: Create a new wallet via a random 12-word mnemonic.
             Wallet wallet = new Wallet(Wordlist.English, WordCount.Twelve);
             string words = string.Join(" ", wallet.Words);
-            string filename = string.Empty;
+            string fileName = string.Empty;
 
             try
             {
@@ -300,7 +299,7 @@ namespace Wallets
             WriteLine("Address => Private Key");
             int NUMBER_OF_DERIVATIONS = 20;
 
-            for(int i = 0; i < NUMBER_OF_DERIVATIONS: i++)
+            for(int i = 0; i < NUMBER_OF_DERIVATIONS; i++)
             {
                 WriteLine($"{wallet.GetAccount(i).Address} -> {wallet.GetAccount(i).PrivateKey}");
             }
