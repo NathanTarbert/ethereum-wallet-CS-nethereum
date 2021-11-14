@@ -23,7 +23,7 @@ namespace Wallets
             MainAsync();
         }
 
-        static async Task MainAsync(string[] args)
+        static async void MainAsync()
         {
             // Available commands
             string[] availableOperations =
@@ -120,6 +120,7 @@ namespace Wallets
             }
         }
 
+        // Preset codes: Dialogs ============================
         // Preset codes: Dialogs ============================
         private static Wallet CreateWalletDialog()
         {
@@ -283,7 +284,7 @@ namespace Wallets
             WriteLine("---");
 
             // TODO: Display the seed
-            WriteLine("Seed: ");
+            WriteLine("Seed:");
             WriteLine(wallet.Seed);
             WriteLine("---");
 
@@ -296,10 +297,10 @@ namespace Wallets
         private static void PrintAddressesAndKeys(Wallet wallet)
         {
             // TODO: Print all the Addresses and the coresponding Private Keys.
-            WriteLine("Address => Private Key");
+            WriteLine("Address -> Private Key");
             int NUMBER_OF_DERIVATIONS = 20;
 
-            for(int i = 0; i < NUMBER_OF_DERIVATIONS; i++)
+            for (int i = 0; i < NUMBER_OF_DERIVATIONS; i++)
             {
                 WriteLine($"{wallet.GetAccount(i).Address} -> {wallet.GetAccount(i).PrivateKey}");
             }
@@ -313,7 +314,7 @@ namespace Wallets
             string words = string.Join(" ", wallet.Words);
             string encryptedWords = Rijndael.Encrypt(words, password, KeySize.Aes256);
 
-            //TODO Save the Wallet as JSON to disk
+            //TODO: Save the Wallet as JSON to disk
             DateTime now = DateTime.Now;
             var walletJSONData = new { encryptedWords, date = now.ToString() };
             string JSON = JsonConvert.SerializeObject(walletJSONData);
@@ -346,7 +347,8 @@ namespace Wallets
                 string encryptWords = results.enctyptedWords;
                 words = Rijndael.Decrypt(encryptWords, password, KeySize.Aes256);
                 string dateAndTime = results.date;
-            }catch (Exception e)
+            }
+            catch (Exception e)
             {
                 WriteLine($"Load error: {e.Message}");
             }
@@ -375,7 +377,8 @@ namespace Wallets
             try
             {
                 fileName = SaveWalletToJsonFile(wallet, password, pathfile);
-            }catch (Exception e)
+            }
+            catch (Exception e)
             {
                 WriteLine($"Error! The file {fileName} cannot be saved: {e.Message}");
                 throw e;
@@ -395,7 +398,8 @@ namespace Wallets
                     WriteLine(wallet.GetAccount(i).Address);
                 }
                 WriteLine();
-            }else
+            }
+            else
             {
                 WriteLine("No addresses found!");
             }
@@ -425,7 +429,7 @@ namespace Wallets
                     toAddress,
                     new Nethereum.Hex.HexTypes.HexBigInteger(wei)
                     ).Result;
-                WriteLine("Transaction has been sent successfully");
+                WriteLine("Transaction has been sent successfully!");
             }
             catch (Exception e)
             {
@@ -450,6 +454,7 @@ namespace Wallets
                 totalBalance += etherAmount;
                 WriteLine($"Address: {wallet.GetAccount(i).Address} -> Balance: {etherAmount} ETH");
             }
+
             WriteLine($"Total balance: {totalBalance} ETH");
         }
     }
